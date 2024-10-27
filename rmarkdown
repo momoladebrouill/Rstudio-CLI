@@ -1,0 +1,15 @@
+#!/usr/bin/bash
+
+## On suppose que le dossier rstudio est dans le home de l'utilisateur
+LOCALUS=/home/$(whoami)/rstudio
+cp $1 $LOCALUS/document.Rmd
+
+echo "debut de R"
+R_LIBS_USER="$LOCALUS/R/x86_64-pc-linux-gnu-library/4.4"
+export R_LIBS_USER
+echo "library(knitr);rmarkdown::render('$LOCALUS/document.Rmd', 'pdf_document')" | R --no-save
+unset R_LIBS_USER
+echo "fin de R"
+
+mv $LOCALUS/document.pdf ./$1.pdf
+echo "bien créé $1.pdf"
